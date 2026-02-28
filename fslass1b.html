@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PowerPulse | Personal Fitness Tracker</title>
+    <style>
+        /* Modern Sporty Theme */
+        body { background-color: #1a1a1a; color: #ffffff; font-family: 'Arial Black', sans-serif; margin: 0; padding: 20px; }
+        .tracker-box { background: #262626; border: 3px solid #ccff00; padding: 30px; border-radius: 20px; max-width: 500px; margin: auto; }
+        h1 { color: #ccff00; text-transform: uppercase; letter-spacing: 2px; }
+        input { width: 80%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; font-size: 1rem; }
+        button { background: #ccff00; color: #000; border: none; padding: 15px 30px; font-weight: bold; border-radius: 50px; cursor: pointer; }
+        button:hover { background: #b3e600; box-shadow: 0 0 15px #ccff00; }
+        #resultDisplay { margin-top: 25px; padding: 15px; border-radius: 10px; background: #333; }
+        .highlight { color: #ccff00; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+
+    <div class="tracker-box">
+        <h1>PowerPulse</h1>
+        <p>Track your <mark style="background:#ccff00; color:#000">Body Mass Index</mark> instantly.</p>
+        
+        <label>Weight (kg):</label><br>
+        <input type="number" id="weight" placeholder="e.g. 75"><br>
+        
+        <label>Height (cm):</label><br>
+        <input type="number" id="height" placeholder="e.g. 170"><br>
+        
+        <button onclick="runFitnessCheck()">Calculate My Stats</button>
+
+        <div id="resultDisplay">Your results will appear here.</div>
+    </div>
+
+    <script>
+        /**
+         * 1. USER-DEFINED FUNCTION
+         * Custom logic to categorize the BMI score.
+         */
+        function getWeightStatus(bmiValue) {
+            if (bmiValue < 18.5) return "Underweight (Needs more protein!)";
+            if (bmiValue >= 18.5 && bmiValue <= 24.9) return "Healthy (Keep it up!)";
+            return "Overweight (Time for more cardio!)";
+        }
+
+        /**
+         * 2. MAIN PROCESS FUNCTION
+         * Orchestrates the standard and user-defined logic.
+         */
+        function runFitnessCheck() {
+            // A. STANDARD FUNCTION: document.getElementById().value
+            const w = document.getElementById("weight").value;
+            const h = document.getElementById("height").value;
+
+            // B. STANDARD FUNCTION: parseFloat() - converts text to decimal numbers
+            const weightNum = parseFloat(w);
+            const heightInMeters = parseFloat(h) / 100;
+
+            if (!weightNum || !heightInMeters) {
+                // C. STANDARD FUNCTION: alert()
+                alert("Please enter valid numbers for both fields.");
+                return;
+            }
+
+            // Calculation Logic
+            const bmi = weightNum / (heightInMeters * heightInMeters);
+
+            // D. STANDARD FUNCTION: .toFixed(1) - rounds to one decimal place
+            const roundedBmi = bmi.toFixed(1);
+
+            // Calling our User-Defined Function
+            const status = getWeightStatus(bmi);
+
+            // Displaying the result
+            document.getElementById("resultDisplay").innerHTML = `
+                <p>Your BMI: <span class="highlight">${roundedBmi}</span></p>
+                <p>Status: <strong>${status}</strong></p>
+            `;
+            
+            // E. STANDARD FUNCTION: console.log() for monitoring
+            console.log("BMI Calculated:", roundedBmi);
+        }
+    </script>
+</body>
+</html>
