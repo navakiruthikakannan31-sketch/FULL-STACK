@@ -1,0 +1,30 @@
+var TimeLimitedCache = function() {
+    this.cache = new Map(); // Stores { key: { value, timeoutId } }
+};
+
+
+TimeLimitedCache.prototype.set = function(key, value, duration) {
+    const found = this.cache.has(key);
+    
+    
+    if (found) {
+        clearTimeout(this.cache.get(key).timeoutId);
+    }
+    
+    
+    const timeoutId = setTimeout(() => {
+        this.cache.delete(key);
+    }, duration);
+    
+    this.cache.set(key, { value, timeoutId });
+    
+    return found;
+};
+
+
+TimeLimitedCache.prototype.get = function(key) {
+    return this.cache.has(key) ? this.cache.get(key).value : -1;
+};
+TimeLimitedCache.prototype.count = function() {
+    return this.cache.size;
+};
