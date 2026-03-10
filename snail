@@ -1,0 +1,20 @@
+Array.prototype.snail = function(rowsCount, colsCount) {
+    if (rowsCount * colsCount !== this.length) {
+        return [];
+    }
+
+    const result = Array.from({ length: rowsCount }, () => []);
+
+    for (let i = 0; i < this.length; i++) {
+        const col = Math.floor(i / rowsCount);
+        const rowInCol = i % rowsCount;
+        
+        const row = col % 2 === 0 
+            ? rowInCol 
+            : rowsCount - 1 - rowInCol;
+
+        result[row][col] = this[i];
+    }
+
+    return result;
+}
